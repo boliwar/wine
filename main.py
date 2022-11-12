@@ -2,6 +2,7 @@ from http.server import HTTPServer, SimpleHTTPRequestHandler
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import datetime
+import pandas
 
 
 def get_str_years(years):
@@ -26,15 +27,18 @@ env = Environment(
 
 template = env.get_template('template.html')
 
-
+excel_wines = pandas.read_excel('wine.xlsx').to_dict(orient='record')
+print(excel_wines)
 
 rendered_page = template.render(
     together_years=together_years,
     ru_years=ru_years,
+    excel_wines = excel_wines,
 )
 
 with open('index.html', 'w', encoding="utf8") as file:
     file.write(rendered_page)
+
 
 server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
 server.serve_forever()
