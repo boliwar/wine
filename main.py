@@ -17,7 +17,7 @@ def get_str_years(years):
 
 def main():
     foundation_year = 1920
-    now_year = int(datetime.datetime.now().strftime('%Y'))
+    now_year = datetime.datetime.now().year
     together_years = now_year - foundation_year
     ru_years = get_str_years(together_years)
 
