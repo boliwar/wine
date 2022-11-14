@@ -18,8 +18,8 @@ def get_str_years(years):
 def main():
     foundation_year = 1920
     now_year = datetime.datetime.now().year
-    together_years = now_year - foundation_year
-    ru_years = get_str_years(together_years)
+    existence_years = now_year - foundation_year
+    ru_years = get_str_years(existence_years)
 
     env = Environment(
         loader=FileSystemLoader('.'),
@@ -42,7 +42,7 @@ def main():
     wine_category = list(wines.keys())
 
     rendered_page = template.render(
-        together_years=together_years,
+        existence_years=existence_years,
         ru_years=ru_years,
         wine_category = wine_category,
         wines = wines,
