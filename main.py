@@ -30,26 +30,25 @@ env = Environment(
 template = env.get_template('template.html')
 
 excel_wines = pandas.read_excel('wine2.xlsx', na_values=' ', keep_default_na=False).to_dict(orient='record')
-print(excel_wines)
-d = collections.defaultdict(list)
+wines = collections.defaultdict(list)
 for wine in excel_wines:
-    d[wine['Категория']].append({wine['Название'],
-                                 wine['Сорт'],
-                                 wine['Цена'],
-                                 wine['Картинка'],
-                                 })
+    wines[wine['Категория']].append({'Название': wine['Название'],
+                                 'Сорт': wine['Сорт'],
+                                 'Цена': wine['Цена'],
+                                 'Картинка': wine['Картинка']})
+
+wine_category = list(wines.keys())
+
+rendered_page = template.render(
+    together_years=together_years,
+    ru_years=ru_years,
+    wine_category = wine_category,
+    wines = wines,
+)
+
+with open('index.html', 'w', encoding="utf8") as file:
+    file.write(rendered_page)
 
 
-pprint(d)
-# rendered_page = template.render(
-#     together_years=together_years,
-#     ru_years=ru_years,
-#     excel_wines = excel_wines,
-# )
-#
-# with open('index.html', 'w', encoding="utf8") as file:
-#     file.write(rendered_page)
-#
-#
-# server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-# server.serve_forever()
+server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+server.serve_forever()
