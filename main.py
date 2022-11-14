@@ -4,7 +4,6 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 import datetime
 import pandas
 import collections
-from pprint import pprint
 
 
 def get_str_years(years):
