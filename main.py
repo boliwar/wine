@@ -15,42 +15,46 @@ def get_str_years(years):
     else:
         return get_str_years(years % (10**(len(str(years))-1)))
 
+def main():
+    birth_year = 1920
+    now_year = int(datetime.datetime.now().strftime('%Y'))
+    together_years = now_year - birth_year
+    ru_years = get_str_years(together_years)
 
-birth_year = 1920
-now_year = int(datetime.datetime.now().strftime('%Y'))
-together_years = now_year - birth_year
-ru_years = get_str_years(together_years)
+    env = Environment(
+        loader=FileSystemLoader('.'),
+        autoescape=select_autoescape(['html', 'xml'])
+    )
 
-env = Environment(
-    loader=FileSystemLoader('.'),
-    autoescape=select_autoescape(['html', 'xml'])
-)
+    template = env.get_template('template.html')
 
-template = env.get_template('template.html')
+    excel_wines = pandas.read_excel('wine3.xlsx', na_values=' ', keep_default_na=False).to_dict(orient='record')
+    wines = collections.defaultdict(list)
+    for wine in excel_wines:
 
-excel_wines = pandas.read_excel('wine3.xlsx', na_values=' ', keep_default_na=False).to_dict(orient='record')
-wines = collections.defaultdict(list)
-for wine in excel_wines:
+        wines[wine['Категория']].append({'Название': wine['Название'],
+                                        'Сорт': wine['Сорт'],
+                                        'Цена': wine['Цена'],
+                                        'Картинка': wine['Картинка'],
+                                         'Акция': wine['Акция'],
+                                         })
 
-    wines[wine['Категория']].append({'Название': wine['Название'],
-                                    'Сорт': wine['Сорт'],
-                                    'Цена': wine['Цена'],
-                                    'Картинка': wine['Картинка'],
-                                     'Акция': wine['Акция'],
-                                     })
+    wine_category = list(wines.keys())
 
-wine_category = list(wines.keys())
+    rendered_page = template.render(
+        together_years=together_years,
+        ru_years=ru_years,
+        wine_category = wine_category,
+        wines = wines,
+    )
 
-rendered_page = template.render(
-    together_years=together_years,
-    ru_years=ru_years,
-    wine_category = wine_category,
-    wines = wines,
-)
-
-with open('index.html', 'w', encoding="utf8") as file:
-    file.write(rendered_page)
+    with open('index.html', 'w', encoding="utf8") as file:
+        file.write(rendered_page)
 
 
-server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
-server.serve_forever()
+    server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
+    server.serve_forever()
+
+
+if __name__ == "__main__":
+    main()
