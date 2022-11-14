@@ -45,12 +45,9 @@ def main():
                                          'Акция': wine['Акция'],
                                          })
 
-    wine_category = list(wines.keys())
-
     rendered_page = template.render(
         existence_years=existence_years,
         ru_years=ru_years,
-        wine_category = wine_category,
         wines = wines,
     )
 
