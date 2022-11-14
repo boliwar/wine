@@ -7,13 +7,15 @@ import collections
 
 
 def get_str_years(years):
-    if len(str(years)) == 1:
-        if years == 1: return 'год'
-        elif years in (2,3,4): return 'года'
-        else: return 'лет'
-    elif len(str(years)) == 2 and (years // 10) == 1: return 'лет'
-    else:
-        return get_str_years(years % (10**(len(str(years))-1)))
+    if len(str(years)) > 1:
+        if len(str(years)) == 2 and (years // 10) == 1: return 'лет'
+        return get_str_years(years % (10 ** (len(str(years)) - 1)))
+
+    if years == 1: return 'год'
+    elif years in (2,3,4): return 'года'
+    else: return 'лет'
+
+
 
 def main():
     foundation_year = 1920
