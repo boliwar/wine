@@ -29,13 +29,16 @@ env = Environment(
 
 template = env.get_template('template.html')
 
-excel_wines = pandas.read_excel('wine2.xlsx', na_values=' ', keep_default_na=False).to_dict(orient='record')
+excel_wines = pandas.read_excel('wine3.xlsx', na_values=' ', keep_default_na=False).to_dict(orient='record')
 wines = collections.defaultdict(list)
 for wine in excel_wines:
+
     wines[wine['Категория']].append({'Название': wine['Название'],
-                                 'Сорт': wine['Сорт'],
-                                 'Цена': wine['Цена'],
-                                 'Картинка': wine['Картинка']})
+                                    'Сорт': wine['Сорт'],
+                                    'Цена': wine['Цена'],
+                                    'Картинка': wine['Картинка'],
+                                     'Акция': wine['Акция'],
+                                     })
 
 wine_category = list(wines.keys())
 
