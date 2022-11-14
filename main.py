@@ -16,9 +16,9 @@ def get_str_years(years):
         return get_str_years(years % (10**(len(str(years))-1)))
 
 def main():
-    birth_year = 1920
+    foundation_year = 1920
     now_year = int(datetime.datetime.now().strftime('%Y'))
-    together_years = now_year - birth_year
+    together_years = now_year - foundation_year
     ru_years = get_str_years(together_years)
 
     env = Environment(
