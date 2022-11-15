@@ -22,7 +22,7 @@ def get_str_years(years):
 def main():
     load_dotenv()
     foundation_year = int(os.environ['FOUNDATION_YEAR'])
-    excel_file = os.environ['EXCEL_FILE']
+    excel_filepath = os.environ['EXCEL_FILE']
     now_year = datetime.datetime.now().year
     existence_years = now_year - foundation_year
     ru_years = get_str_years(existence_years)
@@ -34,7 +34,7 @@ def main():
 
     template = env.get_template('template.html')
 
-    excel_wines = pandas.read_excel(excel_file, na_values=' ', keep_default_na=False).to_dict(orient='record')
+    excel_wines = pandas.read_excel(excel_filepath, na_values=' ', keep_default_na=False).to_dict(orient='record')
     wines = collections.defaultdict(list)
     for wine in excel_wines:
 
