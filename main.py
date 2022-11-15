@@ -9,14 +9,18 @@ from dotenv import load_dotenv
 
 
 def get_str_years(years):
-    if len(str(years)) == 2 and (years // 10) == 1: return 'лет'
+    if len(str(years)) == 2 and (years // 10) == 1:
+        return 'лет'
+
     if len(str(years)) > 1:
         return get_str_years(years % (10 ** (len(str(years)) - 1)))
 
-    if years == 1: return 'год'
-    elif years in (2,3,4): return 'года'
-    else: return 'лет'
-
+    if years == 1:
+        return 'год'
+    elif years in (2, 3, 4):
+        return 'года'
+    else:
+        return 'лет'
 
 
 def main():
@@ -39,21 +43,20 @@ def main():
     for wine in excel_wines:
 
         wines[wine['Категория']].append({'Название': wine['Название'],
-                                        'Сорт': wine['Сорт'],
-                                        'Цена': wine['Цена'],
-                                        'Картинка': wine['Картинка'],
+                                         'Сорт': wine['Сорт'],
+                                         'Цена': wine['Цена'],
+                                         'Картинка': wine['Картинка'],
                                          'Акция': wine['Акция'],
                                          })
 
     rendered_page = template.render(
         existence_years=existence_years,
         ru_years=ru_years,
-        wines = wines,
+        wines=wines,
     )
 
     with open('index.html', 'w', encoding="utf8") as file:
         file.write(rendered_page)
-
 
     server = HTTPServer(('0.0.0.0', 8000), SimpleHTTPRequestHandler)
     server.serve_forever()
@@ -61,3 +64,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
